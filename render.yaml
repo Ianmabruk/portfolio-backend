@@ -1,7 +1,6 @@
 services:
-  backend:
+  - name: mabrix-backend
     type: web
-    name: mabrix-backend
     env: node
     plan: free
     buildCommand: yarn
