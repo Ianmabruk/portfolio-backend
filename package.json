@@ -2,6 +2,9 @@
   "name": "mabrix-server",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=18 <23"
+  },
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
@@ -14,7 +17,7 @@
     "dotenv": "^16.4.5",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
-    "better-sqlite3": "^11.6.0",
+    "better-sqlite3": "^12.2.0",
     "multer": "^1.4.5-lts.1",
     "mime-types": "^2.1.35",
     "uuid": "^10.0.0",
