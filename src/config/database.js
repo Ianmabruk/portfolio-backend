@@ -1,8 +1,18 @@
 const Database = require('better-sqlite3');
 const bcrypt = require('bcryptjs');
 const path = require('path');
+const fs = require('fs');
 
-const db = new Database(path.join(__dirname, '../../uploads/mabrix.db'));
+const uploadDir = path.join(__dirname, '../../uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+['media', 'portfolio', 'services', 'testimonials'].forEach(d => {
+  const p = path.join(uploadDir, d);
+  if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true });
+});
+
+const db = new Database(path.join(uploadDir, 'mabrix.db'));
 
 db.pragma('journal_mode = WAL');
 db.pragma('foreign_keys = ON');
