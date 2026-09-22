@@ -11,6 +11,6 @@ services:
       - key: PORT
         value: 5000
       - key: JWT_SECRET
-        value: mabrix-super-secret-key-change-in-production
+        value: CHANGE_ME
       - key: FRONTEND_URL
-        value: https://mabricks.netlify.app
+        value: https://portfolio-backend-jwm1.onrender.com
