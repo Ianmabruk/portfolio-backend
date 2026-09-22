@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   'https://mabricks.netlify.app',
   'https://www.mabricks.netlify.app',
+  'https://mabrixel254.netlify.app',
   'http://localhost:5173',
   'http://localhost:3000',
 ];

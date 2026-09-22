@@ -13,4 +13,4 @@ services:
       - key: JWT_SECRET
         value: CHANGE_ME
       - key: FRONTEND_URL
-        value: https://portfolio-backend-jwm1.onrender.com
+        value: https://mabrixel254.netlify.app
