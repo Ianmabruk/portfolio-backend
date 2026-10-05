@@ -32,7 +32,14 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Uploads are written to backend/uploads/<folder> (see utils/upload.js), not to
+// backend/src/uploads, so the previous mount never served any file. Mount only
+// the image folders: backend/uploads also contains mabrix.db, which must never
+// be exposed over HTTP.
+const UPLOADS_ROOT = path.resolve(__dirname, '..', 'uploads');
+['media', 'portfolio', 'services', 'testimonials'].forEach((folder) => {
+  app.use(`/uploads/${folder}`, express.static(path.join(UPLOADS_ROOT, folder)));
+});
 
 initDatabase();
 

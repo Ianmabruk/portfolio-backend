@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { db } = require('../config/database');
+const { authMiddleware } = require('../middleware/auth');
 
 router.get('/', (req, res) => {
   const settings = db.prepare('SELECT * FROM site_settings').all();
@@ -19,7 +20,8 @@ router.get('/:key', (req, res) => {
   res.json({ success: true, data: setting });
 });
 
-router.post('/', (req, res) => {
+// These settings are rendered on the public site, so writes must be admin-only.
+router.post('/', authMiddleware, (req, res) => {
   const { key, value, type } = req.body;
   if (!key) {
     return res.status(400).json({ success: false, message: 'Key is required' });

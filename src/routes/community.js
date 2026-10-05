@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { db } = require('../config/database');
+const { authMiddleware } = require('../middleware/auth');
 const { z } = require('zod');
 
 const communitySchema = z.object({
@@ -53,7 +54,7 @@ router.get('/', (req, res) => {
   res.json({ success: true, data: members });
 });
 
-router.put('/:id/status', (req, res) => {
+router.put('/:id/status', authMiddleware, (req, res) => {
   const { status } = req.body;
   db.prepare('UPDATE community_members SET status = ? WHERE id = ?').run(status, req.params.id);
   res.json({ success: true, message: 'Status updated' });

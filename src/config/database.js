@@ -213,6 +213,11 @@ const initDatabase = () => {
   try { db.prepare('ALTER TABLE services ADD COLUMN content TEXT').run(); } catch (e) {}
   try { db.prepare('ALTER TABLE inquiries ADD COLUMN phone TEXT').run(); } catch (e) {}
   try { db.prepare('ALTER TABLE inquiries ADD COLUMN company TEXT').run(); } catch (e) {}
+  try { db.prepare('ALTER TABLE portfolio_projects ADD COLUMN github_url TEXT').run(); } catch (e) {}
+  try { db.prepare("ALTER TABLE portfolio_projects ADD COLUMN status TEXT DEFAULT 'live'").run(); } catch (e) {}
+  // Seed rows stored active = 2 / 3, which is not a valid flag. Reads filter on
+  // active = 1, so those projects were never returned. Clamp to 1; valid rows untouched.
+  try { db.prepare('UPDATE portfolio_projects SET active = 1 WHERE active IS NULL OR active NOT IN (0, 1)').run(); } catch (e) {}
 
   const defaultAdmin = db.prepare('SELECT * FROM admin_users WHERE email = ?').get('Mabricks@gmail.com');
   if (!defaultAdmin) {

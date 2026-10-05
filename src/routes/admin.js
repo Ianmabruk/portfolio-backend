@@ -37,7 +37,14 @@ router.get('/services', (req, res) => {
 
 router.get('/portfolio', (req, res) => {
   const projects = db.prepare('SELECT * FROM portfolio_projects ORDER BY ordering ASC, id DESC').all();
-  res.json({ success: true, data: projects });
+  // Include gallery images so the edit form can manage them without extra requests.
+  const data = projects.map((project) => ({
+    ...project,
+    images: db
+      .prepare('SELECT * FROM project_images WHERE project_id = ? ORDER BY ordering ASC, id ASC')
+      .all(project.id),
+  }));
+  res.json({ success: true, data });
 });
 
 router.get('/testimonials', (req, res) => {
