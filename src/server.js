@@ -14,6 +14,8 @@ const allowedOrigins = [
   'https://www.mabricks.netlify.app',
   'https://mabrixel254.netlify.app',
   'http://localhost:5173',
+  // Admin dashboard dev server (the public portfolio uses 5173).
+  'http://localhost:5174',
   'http://localhost:3000',
 ];
 const frontendUrl = process.env.FRONTEND_URL || 'https://mabrix-tech.netlify.app';
