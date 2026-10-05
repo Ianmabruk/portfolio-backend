@@ -219,15 +219,23 @@ const initDatabase = () => {
   // active = 1, so those projects were never returned. Clamp to 1; valid rows untouched.
   try { db.prepare('UPDATE portfolio_projects SET active = 1 WHERE active IS NULL OR active NOT IN (0, 1)').run(); } catch (e) {}
 
-  const defaultAdmin = db.prepare('SELECT * FROM admin_users WHERE email = ?').get('Mabricks@gmail.com');
-  if (!defaultAdmin) {
-    const hash = bcrypt.hashSync('Admin 123', 10);
+  const adminEmail = process.env.ADMIN_EMAIL || 'Mabricks@gmail.com';
+  const adminPassword = process.env.ADMIN_PASSWORD || 'Admin 123';
+  const adminName = process.env.ADMIN_NAME || 'Admin';
+
+  const existingAdmin = db.prepare('SELECT * FROM admin_users WHERE email = ?').get(adminEmail);
+  if (!existingAdmin) {
+    const hash = bcrypt.hashSync(adminPassword, 10);
     db.prepare('INSERT INTO admin_users (email, password_hash, name) VALUES (?, ?, ?)').run(
-      'Mabricks@gmail.com',
+      adminEmail,
       hash,
-      'Admin'
+      adminName
     );
-    console.log('Default admin created: Mabricks@gmail.com');
+    console.log(`Default admin created: ${adminEmail}`);
+  } else if (process.env.ADMIN_PASSWORD) {
+    const hash = bcrypt.hashSync(adminPassword, 10);
+    db.prepare('UPDATE admin_users SET password_hash = ?, updated_at = CURRENT_TIMESTAMP WHERE email = ?').run(hash, adminEmail);
+    console.log(`Admin password updated for: ${adminEmail}`);
   }
 
   const defaultSettings = [

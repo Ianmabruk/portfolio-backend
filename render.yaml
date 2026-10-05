@@ -14,3 +14,9 @@ services:
         value: CHANGE_ME
       - key: FRONTEND_URL
         value: https://mabrixel254.netlify.app
+      - key: ADMIN_EMAIL
+        value: ian@gmail.com
+      - key: ADMIN_PASSWORD
+        value: admin123
+      - key: ADMIN_NAME
+        value: Ian Mabruk
